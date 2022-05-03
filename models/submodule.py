@@ -67,26 +67,45 @@ class feature_extraction(nn.Module):
         self.layer3 = self._make_layer(BasicBlock, 128, 3, 1,1,1)
         self.layer4 = self._make_layer(BasicBlock, 128, 3, 1,1,2)
 
-        self.branch1 = nn.Sequential(nn.AvgPool2d((64, 64), stride=(64,64)),
-                                     convbn(128, 32, 1, 1, 0, 1),
+        # self.branch1 = nn.Sequential(nn.AvgPool2d((64, 64), stride=(64,64)),
+        #                              convbn(128, 32, 1, 1, 0, 1),
+        #                              nn.ReLU(inplace=True))
+
+        # self.branch2 = nn.Sequential(nn.AvgPool2d((32, 32), stride=(32,32)),
+        #                              convbn(128, 32, 1, 1, 0, 1),
+        #                              nn.ReLU(inplace=True))
+
+        # self.branch3 = nn.Sequential(nn.AvgPool2d((16, 16), stride=(16,16)),
+        #                              convbn(128, 32, 1, 1, 0, 1),
+        #                              nn.ReLU(inplace=True))
+
+        # self.branch4 = nn.Sequential(nn.AvgPool2d((8, 8), stride=(8,8)),
+        #                              convbn(128, 32, 1, 1, 0, 1),
+        #                              nn.ReLU(inplace=True))
+
+        # self.lastconv = nn.Sequential(convbn(320, 128, 3, 1, 1, 1),
+        #                               nn.ReLU(inplace=True),
+        #                               nn.Conv2d(128, 32, kernel_size=1, padding=0, stride = 1, bias=False))
+        self.branch1 = nn.Sequential(nn.AvgPool2d((32, 32), stride=(1,1)),
+                                     convbn(128, 32, 1, 1, 0, 6),
                                      nn.ReLU(inplace=True))
 
-        self.branch2 = nn.Sequential(nn.AvgPool2d((32, 32), stride=(32,32)),
-                                     convbn(128, 32, 1, 1, 0, 1),
+        self.branch2 = nn.Sequential(nn.AvgPool2d((32, 32), stride=(1,1)),
+                                     convbn(128, 32, 1, 1, 0, 12),
                                      nn.ReLU(inplace=True))
 
-        self.branch3 = nn.Sequential(nn.AvgPool2d((16, 16), stride=(16,16)),
-                                     convbn(128, 32, 1, 1, 0, 1),
+        self.branch3 = nn.Sequential(nn.AvgPool2d((32, 32), stride=(1,1)),
+                                     convbn(128, 32, 1, 1, 0, 18),
                                      nn.ReLU(inplace=True))
 
-        self.branch4 = nn.Sequential(nn.AvgPool2d((8, 8), stride=(8,8)),
-                                     convbn(128, 32, 1, 1, 0, 1),
+        self.branch4 = nn.Sequential(nn.AvgPool2d((32, 32), stride=(1,1)),
+                                     convbn(128, 32, 1, 1, 0, 24),
                                      nn.ReLU(inplace=True))
 
         self.lastconv = nn.Sequential(convbn(320, 128, 3, 1, 1, 1),
                                       nn.ReLU(inplace=True),
                                       nn.Conv2d(128, 32, kernel_size=1, padding=0, stride = 1, bias=False))
-
+    
     def _make_layer(self, block, planes, blocks, stride, pad, dilation):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:

@@ -61,7 +61,8 @@ class PSMNet(nn.Module):
 
         refimg_fea     = self.feature_extraction(left)
         targetimg_fea  = self.feature_extraction(right)
- 
+        print("............",type(refimg_fea.size()[3]))
+        print(targetimg_fea.size())
         #matching
         cost = Variable(torch.FloatTensor(refimg_fea.size()[0], refimg_fea.size()[1]*2, self.maxdisp/4,  refimg_fea.size()[2],  refimg_fea.size()[3]).zero_(), volatile= not self.training).cuda()
 
